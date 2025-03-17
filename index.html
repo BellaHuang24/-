@@ -4,33 +4,80 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>金价计算器</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            background-color: #f9f9f9;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        .result {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
-    <h1>金价计算器</h1>
-    <form id="goldPriceForm">
-        <label for="X">今日金价 (SGD/克):</label>
-        <input type="number" id="X" name="X" required><br><br>
-        
-        <label for="a">ALUXE 黄金优惠 (SGD/克):</label>
-        <input type="number" id="a" name="a" required><br><br>
-        
-        <label for="Y">金饰的克重 (克):</label>
-        <input type="number" id="Y" name="Y" required><br><br>
-        
-        <label for="Z">手工费 (SGD):</label>
-        <input type="number" id="Z" name="Z" required><br><br>
-        
-        <label for="b">手工费的折扣 (%):</label>
-        <input type="number" id="b" name="b" required><br><br>
-        
-        <label for="c">手工费的现金折扣 (SGD):</label>
-        <input type="number" id="c" name="c" required><br><br>
-        
-        <button type="button" onclick="calculatePrice()">计算价格</button>
-    </form>
+    <div class="container">
+        <h1>金价计算器</h1>
+        <form id="goldPriceForm">
+            <label for="X">今日金价 (SGD/克):</label>
+            <input type="number" id="X" name="X" required><br><br>
+            
+            <label for="a">ALUXE 黄金优惠 (SGD/克):</label>
+            <input type="number" id="a" name="a" required><br><br>
+            
+            <label for="Y">金饰的克重 (克):</label>
+            <input type="number" id="Y" name="Y" required><br><br>
+            
+            <label for="Z">手工费 (SGD):</label>
+            <input type="number" id="Z" name="Z" required><br><br>
+            
+            <label for="b">手工费的折扣 (%):</label>
+            <input type="number" id="b" name="b" required><br><br>
+            
+            <label for="c">手工费的现金折扣 (SGD):</label>
+            <input type="number" id="c" name="c" required><br><br>
+            
+            <button type="button" onclick="calculatePrice()">计算价格</button>
+        </form>
 
-    <h2>计算结果:</h2>
-    <p id="result"></p>
+        <div class="result">
+            <p id="totalPrice"></p>
+            <p id="priceWithGST"></p>
+        </div>
+    </div>
 
     <script>
         function calculatePrice() {
@@ -48,11 +95,15 @@
             // 计算手工费的折扣
             const discountedCraftsmanshipFee = Z * (1 - b / 100);
 
-            // 计算最终价格
-            const finalPrice = basePrice + discountedCraftsmanshipFee - c;
+            // 计算金饰总价
+            const totalPrice = basePrice + discountedCraftsmanshipFee - c;
+
+            // 计算加 GST 之后的价格
+            const priceWithGST = totalPrice * 1.09;
 
             // 显示结果
-            document.getElementById('result').innerText = `这件金饰的最终价格是: ${finalPrice.toFixed(2)} SGD`;
+            document.getElementById('totalPrice').innerText = `金饰总价: ${totalPrice.toFixed(2)} SGD`;
+            document.getElementById('priceWithGST').innerText = `加 GST 之后的价格: ${priceWithGST.toFixed(2)} SGD`;
         }
     </script>
 </body>
